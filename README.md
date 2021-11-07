@@ -13,9 +13,9 @@ db.write()
 ```js
 // db.json
 {
-  "posts": [
-    { "id": 1, "title": "lowdb is awesome" }
-  ]
+    "posts": [
+        { "id": 1, "title": "lowdb is awesome" }
+    ]
 }
 ```
 
@@ -27,9 +27,9 @@ If you like lowdb, see also [xv](https://github.com/typicode/xv) (test runner) a
 <br>
 
 <p align="center">
-  <a href="https://mockend.com/" target="_blank">
-    <img src="https://jsonplaceholder.typicode.com/mockend.svg" height="70px">
-  </a>
+    <a href="https://mockend.com/" target="_blank">
+        <img src="https://jsonplaceholder.typicode.com/mockend.svg" height="70px">
+    </a>
 </p>
 
 <br>
@@ -78,7 +78,7 @@ await db.read()
 // If file.json doesn't exist, db.data will be null
 // Set default data
 // db.data = db.data || { posts: [] } // Node < v15.x
-db.data ||= { posts: [] }             // Node >= 15.x
+db.data ||= { posts: [] }                         // Node >= 15.x
 
 // Create and query items using plain JS
 db.data.posts.push('hello world')
@@ -95,7 +95,7 @@ await db.write()
 ```js
 // db.json
 {
-  "posts": [ "hello world" ]
+    "posts": [ "hello world" ]
 }
 ```
 
@@ -105,14 +105,14 @@ Lowdb now comes with TypeScript support. You can even type `db.data` content.
 
 ```ts
 type Data = {
-  posts: string[] // Expect posts to be an array of strings
+    posts: string[] // Expect posts to be an array of strings
 }
 const adapter = new JSONFile<Data>('db.json')
 const db = new Low<Data>(adapter)
 
 db.data
-  .posts
-  .push(1) // TypeScript error 🎉
+    .posts
+    .push(1) // TypeScript error 🎉
 ```
 
 ### Lodash
@@ -128,9 +128,9 @@ db.chain = lodash.chain(db.data)
 
 // Instead of db.data, you can now use db.chain if you want to use the powerful API that lodash provides
 const post = db.chain
-  .get('posts')
-  .find({ id: 1 })
-  .value() // Important: value() needs to be called to execute chain
+    .get('posts')
+    .find({ id: 1 })
+    .value() // Important: value() needs to be called to execute chain
 ```
 
 ### More examples
@@ -248,13 +248,13 @@ An adapter is a simple class that just needs to expose two methods:
 
 ```js
 class AsyncAdapter {
-  read() { /* ... */ } // should return Promise<data>
-  write(data) { /* ... */ } // should return Promise<void>
+    read() { /* ... */ } // should return Promise<data>
+    write(data) { /* ... */ } // should return Promise<void>
 }
 
 class SyncAdapter {
-  read() { /* ... */ } // should return data
-  write(data) { /* ... */ } // should return nothing
+    read() { /* ... */ } // should return data
+    write(data) { /* ... */ } // should return nothing
 }
 ```
 
@@ -264,19 +264,19 @@ For example, let's say you have some async storage and want to create an adapter
 import { api } from './AsyncStorage'
 
 class CustomAsyncAdapter {
-  // Optional: your adapter can take arguments
-  constructor(args) {
-    // ...
-  }
+    // Optional: your adapter can take arguments
+    constructor(args) {
+        // ...
+    }
 
-  async read() {
-    const data = await api.read()
-    return data
-  }
+    async read() {
+        const data = await api.read()
+        return data
+    }
 
-  async write(data) {
-    await api.write(data)
-  }
+    async write(data) {
+        await api.write(data)
+    }
 }
 
 const adapter = new CustomAsyncAdapter()
@@ -296,22 +296,22 @@ import { Adapter, Low, TextFile } from 'lowdb'
 import YAML from 'yaml'
 
 class YAMLFile {
-  constructor(filename) {
-    this.adapter = new TextFile(filename)
-  }
-
-  async read() {
-    const data = await this.adapter.read()
-    if (data === null) {
-      return null
-    } else {
-      return YAML.parse(data)
+    constructor(filename) {
+        this.adapter = new TextFile(filename)
     }
-  }
 
-  write(obj) {
-    return this.adapter.write(YAML.stringify(obj))
-  }
+    async read() {
+        const data = await this.adapter.read()
+        if (data === null) {
+            return null
+        } else {
+            return YAML.parse(data)
+        }
+    }
+
+    write(obj) {
+        return this.adapter.write(YAML.stringify(obj))
+    }
 }
 
 const adapter = new YAMLFile('file.yaml')

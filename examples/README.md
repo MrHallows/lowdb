@@ -61,18 +61,18 @@ db.data ||= { posts: [] }
 const { posts } = db.data
 
 app.get('/posts/:id', async (req, res) => {
-  const post = posts.find((p) => p.id === req.params.id)
-  res.send(post)
+	const post = posts.find((p) => p.id === req.params.id)
+	res.send(post)
 })
 
 app.post('/posts', async (req, res, next) => {
-  const post = posts.push(req.body)
-  await db.write()
-  res.send(post)
+	const post = posts.push(req.body)
+	await db.write()
+	res.send(post)
 })
 
 app.listen(3000, () => {
-  console.log('listening on port 3000')
+	console.log('listening on port 3000')
 })
 ```
 
@@ -84,7 +84,7 @@ With this adapter, calling `db.write()` will do nothing. One use case for this a
 import { LowSync, JSONFileSync, MemorySync }
 
 const adapter =
-  process.env.NODE_ENV === 'test' ? new MemorySync() : new FileSync('db.json')
+	process.env.NODE_ENV === 'test' ? new MemorySync() : new FileSync('db.json')
 
 const db = new LowSync(adapter)
 ```
